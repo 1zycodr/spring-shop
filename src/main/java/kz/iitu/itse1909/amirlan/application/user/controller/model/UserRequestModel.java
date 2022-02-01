@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class UserRequestModel {
-    @NotEmpty
-    @NotNull
+    @NotEmpty(message = "Username should not be empty")
+    @NotNull(message = "Username should not be null")
     private String username;
 
     @NotEmpty
