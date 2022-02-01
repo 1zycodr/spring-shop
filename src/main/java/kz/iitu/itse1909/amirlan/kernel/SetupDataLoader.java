@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -40,7 +39,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", Arrays.asList(readPrivilege, writePrivilege, deletePrivilege));
         createRoleIfNotFound("ROLE_STAFF", Arrays.asList(readPrivilege, writePrivilege));
-        createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege, writePrivilege));
+        createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
 
         User user = User
                 .builder()

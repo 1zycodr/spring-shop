@@ -16,6 +16,6 @@ public class UserRequestModel {
 
     @NotEmpty
     @NotNull
-    @Length(min = 8)
+    @Length(min = 8, message = "length")
     private String password;
 }

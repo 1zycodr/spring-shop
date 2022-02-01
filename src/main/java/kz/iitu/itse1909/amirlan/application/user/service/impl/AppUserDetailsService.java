@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-@Service("userDetailsService")
+@Service
 @Transactional
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
