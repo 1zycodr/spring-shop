@@ -1,5 +1,8 @@
 package kz.iitu.itse1909.amirlan.application.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +35,7 @@ public class Role {
                     name = "privilege_id", referencedColumnName = "id"
             )
     )
+    @JsonManagedReference
     private Collection<Privilege> privileges;
 
     public Role(String name) {

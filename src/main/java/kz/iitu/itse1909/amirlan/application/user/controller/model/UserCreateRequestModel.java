@@ -9,13 +9,12 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class UserRequestModel {
-    @NotEmpty(message = "Username should not be empty")
-    @NotNull(message = "Username should not be null")
+public class UserCreateRequestModel {
+    @NotEmpty(message = "Username cannot be empty")
+    @NotNull(message = "Username cannot be null")
     private String username;
 
-    @NotEmpty
-    @NotNull
-    @Length(min = 8, message = "length")
+    @NotNull(message = "Password cannot be null")
+    @Length(min = 8, message = "Password must contain at least 8 characters")
     private String password;
 }

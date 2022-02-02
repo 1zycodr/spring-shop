@@ -17,15 +17,15 @@ System based on user - role mechanism. Each role can only interact with the enti
 * Order
 
 **Functionality (Endpoints)**
-* Login system
-  * Authentication: POST /api/v1/token/access/
-    * Refresh: POST /api/v1/token/refresh/
+* Login system (TODO)
+  * <code>POST /api/v1/token/access</code> - auth
+  * <code>POST /api/v1/token/refresh</code> - refresh 
 * Users functionality
-  * Retrieve users: GET /api/v1/user/
-  * Retrieve user: GET /api/v1/user/:id/
-  * User registration: POST /api/v1/user/
-  * Update user: PUT /api/v1/user/:id/
-  * Delete user: DELETE /api/v1/user/:id/
+  * <code>GET /api/v1/user</code> - retrieve users 
+  * <code>GET /api/v1/user/:id</code> - retrieve user 
+  * <code>POST /api/v1/user</code> - user registration
+  * <code>PUT /api/v1/user/:id</code> - update user 
+  * <code>DELETE /api/v1/user/:id</code> - delete user
 * Product functionality
 * Cart functionality
 * Order functionality
