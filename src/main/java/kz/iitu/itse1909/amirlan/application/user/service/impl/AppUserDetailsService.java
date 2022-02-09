@@ -5,6 +5,8 @@ import kz.iitu.itse1909.amirlan.application.user.entity.Role;
 import kz.iitu.itse1909.amirlan.application.user.entity.User;
 import kz.iitu.itse1909.amirlan.application.user.repository.RoleRepository;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,10 +27,21 @@ import java.util.List;
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AppUserDetailsService.class);
 
     public AppUserDetailsService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+    }
+
+    @PostConstruct
+    private void logPostConstruct() {
+        logger.info(AppUserDetailsService.class.getSimpleName() + " constructed!");
+    }
+
+    @PreDestroy
+    private void logPreDestroy() {
+        logger.info(AppUserDetailsService.class.getSimpleName() + " destroying!");
     }
 
     @Override

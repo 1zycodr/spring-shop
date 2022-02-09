@@ -7,19 +7,45 @@ import kz.iitu.itse1909.amirlan.application.user.exceptions.UserAlreadyExistsExc
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.kernel.error.exceptions.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Service
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@PropertySource("classpath:application.properties")
 public class AppUserService implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(AppUserService.class);
+
+    @Value("${custom.property}")
+    private String testValue;
 
     public AppUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostConstruct
+    private void logPostConstruct() {
+        logger.info(AppUserService.class.getSimpleName() + " constructed!");
+        // here we can see test_value in console
+        System.out.println(testValue);
+    }
+
+    @PreDestroy
+    private void logPreDestroy() {
+        logger.info(AppUserService.class.getSimpleName() + " destroying!");
     }
 
     @Override

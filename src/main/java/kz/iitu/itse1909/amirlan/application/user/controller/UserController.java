@@ -2,24 +2,42 @@ package kz.iitu.itse1909.amirlan.application.user.controller;
 
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
+import kz.iitu.itse1909.amirlan.application.user.service.impl.AppUserService;
 import kz.iitu.itse1909.amirlan.kernel.error.exceptions.InvalidArgumentException;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Lazy
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostConstruct
+    private void logPostConstruct() {
+        logger.info(UserController.class.getSimpleName() + " constructed!");
+    }
+
+    @PreDestroy
+    private void logPreDestroy() {
+        logger.info(UserController.class.getSimpleName() + " destroying!");
     }
 
     @PostMapping
