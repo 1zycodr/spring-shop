@@ -1,5 +1,6 @@
 package kz.iitu.itse1909.amirlan.application.user.controller;
 
+import kz.iitu.itse1909.amirlan.aop.aspects.Employee;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.service.impl.AppUserService;
@@ -49,6 +50,9 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
+        Employee employee = new Employee();
+        employee.setName("testName");
+        System.out.println(employee.getName());
         return ResponseEntity.ok(userService.getById(id));
     }
 
