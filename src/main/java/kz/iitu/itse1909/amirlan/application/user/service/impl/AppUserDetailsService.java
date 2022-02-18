@@ -35,12 +35,12 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     @PostConstruct
-    private void logPostConstruct() {
+    public void logPostConstruct() {
         logger.info(AppUserDetailsService.class.getSimpleName() + " constructed!");
     }
 
     @PreDestroy
-    private void logPreDestroy() {
+    public void logPreDestroy() {
         logger.info(AppUserDetailsService.class.getSimpleName() + " destroying!");
     }
 
@@ -61,11 +61,11 @@ public class AppUserDetailsService implements UserDetailsService {
         );
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
+    public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
         return getGrantedAuthorities(getPrivileges(roles));
     }
 
-    private List<String> getPrivileges(Collection<Role> roles) {
+    public List<String> getPrivileges(Collection<Role> roles) {
         List<String> privileges = new ArrayList<>();
         List<Privilege> collection = new ArrayList<>();
 

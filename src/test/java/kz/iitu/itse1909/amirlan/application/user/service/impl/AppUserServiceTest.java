@@ -39,6 +39,14 @@ class AppUserServiceTest {
     }
 
     @Test
+    void logTests() {
+        Assertions.assertDoesNotThrow( () -> {
+            this.service.logPreDestroy();
+            this.service.logPostConstruct();
+        });
+    }
+
+    @Test
     @WithMockUser(username = "admin", password = "admin")
     void createUser() {
         User user = User.builder()

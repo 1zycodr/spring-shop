@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PrivilegeTest {
+class UserTest {
 
     User user = new User();
 

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -37,26 +38,32 @@ public class AppUserService implements UserService {
     }
 
     @PostConstruct
-    private void logPostConstruct() {
-        logger.info(AppUserService.class.getSimpleName() + " constructed!");
+    public void logPostConstruct() {
+        String logMessage = AppUserService.class.getSimpleName() + " constructed!";
+        logger.info(logMessage);
         // here we can see test_value in console
         System.out.println(testValue);
     }
 
     @PreDestroy
-    private void logPreDestroy() {
-        logger.info(AppUserService.class.getSimpleName() + " destroying!");
+    public void logPreDestroy() {
+        String logMessage = AppUserService.class.getSimpleName() + " destroying!";
+        logger.info(logMessage);
     }
 
     @Override
     public User createUser(UserCreateRequestModel requestUser) {
-        if (userRepository.findUserByUsername(requestUser.getUsername()) != null) {
+        User userRep = userRepository.findUserByUsername(requestUser.getUsername());
+        if (userRep != null) {
             throw new UserAlreadyExistsException();
         }
-        User user = User.builder()
-                .username(requestUser.getUsername())
-                .password(passwordEncoder.encode(requestUser.getPassword()))
-                .build();
+        User user;
+        user = User.builder()
+            .username(requestUser.getUsername())
+            .password(
+                    passwordEncoder.encode(requestUser.getPassword())
+            )
+            .build();
         return userRepository.save(user);
     }
 
@@ -71,7 +78,8 @@ public class AppUserService implements UserService {
                     updateUser.setUsername(requestUser.getUsername());
                 }
             }
-            if (requestUser.getPassword() != null) {
+            String password = requestUser.getPassword();
+            if (password != null) {
                 updateUser.setPassword(passwordEncoder.encode(requestUser.getPassword()));
             }
             return userRepository.save(updateUser);
@@ -83,9 +91,11 @@ public class AppUserService implements UserService {
     @Override
     public User getById(Long id) throws EntityNotFoundException {
         if (userRepository.existsById(id)) {
-            return userRepository.findById(id).get();
+            Optional<User> user = userRepository.findById(id);
+            return user.get();
         } else {
-            throw new EntityNotFoundException(String.valueOf(id));
+            String idString = String.valueOf(id);
+            throw new EntityNotFoundException(idString);
         }
     }
 
@@ -97,6 +107,8 @@ public class AppUserService implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        if (id >= 0) {
+            userRepository.deleteById(id);
+        }
     }
 }

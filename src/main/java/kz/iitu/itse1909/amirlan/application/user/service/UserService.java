@@ -12,4 +12,6 @@ public interface UserService {
     User getById(Long id);
     List<User> getUsersList();
     void deleteUser(Long id);
+    void logPostConstruct();
+    void logPreDestroy();
 }
