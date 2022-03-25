@@ -2,7 +2,7 @@ package kz.iitu.itse1909.amirlan.application.user.controller;
 
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
-import kz.iitu.itse1909.amirlan.application.user.entity.User;
+import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.utils.JsonUtil;
 
@@ -38,7 +38,7 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void testGetUser() throws Exception {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
             .id(10L)
             .username("test")
             .build();
@@ -54,7 +54,7 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void createUser() throws Exception {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .id(10L)
                 .username("test")
                 .password("password")
@@ -75,7 +75,7 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void getUsers() throws Exception {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .id(10L)
                 .username("test")
                 .build();
@@ -90,7 +90,7 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void updateUser() throws Exception {
-        User updatedUser = User.builder()
+        AppUser updatedUser = AppUser.builder()
                 .id(10L)
                 .username("test")
                 .build();

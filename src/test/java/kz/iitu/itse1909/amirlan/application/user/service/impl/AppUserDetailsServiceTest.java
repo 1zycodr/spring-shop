@@ -1,6 +1,6 @@
 package kz.iitu.itse1909.amirlan.application.user.service.impl;
 
-import kz.iitu.itse1909.amirlan.application.user.entity.User;
+import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.repository.RoleRepository;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +39,7 @@ class AppUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("admin")
                 .password("password")
                 .build();

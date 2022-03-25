@@ -2,7 +2,7 @@ package kz.iitu.itse1909.amirlan.application.user.service.impl;
 
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
-import kz.iitu.itse1909.amirlan.application.user.entity.User;
+import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.exceptions.UserAlreadyExistsException;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
@@ -49,15 +49,15 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void createUser() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("testt")
                 .password("password")
                 .build();
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userRepository.save(any(AppUser.class))).thenReturn(user);
         UserCreateRequestModel requestModel = new UserCreateRequestModel();
         requestModel.setUsername(user.getUsername());
         requestModel.setPassword(user.getPassword());
-        User serviceUser = service.createUser(requestModel);
+        AppUser serviceUser = service.createUser(requestModel);
         Assertions.assertNotNull(serviceUser);
         Assertions.assertEquals(serviceUser.getUsername(), user.getUsername());
     }
@@ -65,7 +65,7 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void createUserThrow() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("admin")
                 .password("password")
                 .build();
@@ -82,7 +82,7 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void updateUser() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("test_user")
                 .password("password")
                 .build();
@@ -93,10 +93,10 @@ class AppUserServiceTest {
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(userRepository.getById(anyLong())).thenReturn(user);
         when(userRepository.findUserByUsername(anyString())).thenReturn(null);
-        when(userRepository.save(any(User.class))).thenReturn(
-                User.builder().id(10L).username("test_user_renamed").build());
+        when(userRepository.save(any(AppUser.class))).thenReturn(
+                AppUser.builder().id(10L).username("test_user_renamed").build());
 
-        User updatedUser = service.updateUser(10L, userModel);
+        AppUser updatedUser = service.updateUser(10L, userModel);
         Assertions.assertNotNull(updatedUser);
         Assertions.assertEquals(updatedUser.getUsername(), "test_user_renamed");
     }
@@ -117,7 +117,7 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void updateUserThrowNotFound() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("test_user")
                 .password("password")
                 .build();
@@ -138,13 +138,13 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void getById() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("test_user")
                 .password("password")
                 .build();
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
-        User retrievedUser = service.getById(1L);
+        AppUser retrievedUser = service.getById(1L);
         Assertions.assertNotNull(retrievedUser);
         Assertions.assertEquals(retrievedUser.getUsername(), user.getUsername());
     }
@@ -161,12 +161,12 @@ class AppUserServiceTest {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void getUsersList() {
-        User user = User.builder()
+        AppUser user = AppUser.builder()
                 .username("test_user")
                 .password("password")
                 .build();
         when(userRepository.findAll()).thenReturn(Arrays.asList(user));
-        List<User> users = service.getUsersList();
+        List<AppUser> users = service.getUsersList();
         Assertions.assertEquals(users.size(), 1);
         Assertions.assertEquals(users.get(0), user);
     }

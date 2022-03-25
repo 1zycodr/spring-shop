@@ -2,7 +2,7 @@ package kz.iitu.itse1909.amirlan.application.user.service.impl;
 
 import kz.iitu.itse1909.amirlan.application.user.entity.Privilege;
 import kz.iitu.itse1909.amirlan.application.user.entity.Role;
-import kz.iitu.itse1909.amirlan.application.user.entity.User;
+import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.repository.RoleRepository;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsername(username);
+        AppUser user = userRepository.findUserByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found");

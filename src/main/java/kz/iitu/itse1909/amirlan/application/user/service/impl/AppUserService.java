@@ -2,7 +2,7 @@ package kz.iitu.itse1909.amirlan.application.user.service.impl;
 
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
-import kz.iitu.itse1909.amirlan.application.user.entity.User;
+import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.exceptions.UserAlreadyExistsException;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
@@ -15,6 +15,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -24,6 +27,7 @@ import java.util.Optional;
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 @PropertySource("classpath:application.properties")
+@Transactional
 public class AppUserService implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -51,14 +55,20 @@ public class AppUserService implements UserService {
         logger.info(logMessage);
     }
 
+//    @Transactional(
+//            value = "transactionManager",
+//            isolation = Isolation.REPEATABLE_READ,
+//            noRollbackFor = {Exception.class},
+//            noRollbackForClassName = {"NullPointerException"}
+//    )
     @Override
-    public User createUser(UserCreateRequestModel requestUser) {
-        User userRep = userRepository.findUserByUsername(requestUser.getUsername());
+    public AppUser createUser(UserCreateRequestModel requestUser) {
+        AppUser userRep = userRepository.findUserByUsername(requestUser.getUsername());
         if (userRep != null) {
             throw new UserAlreadyExistsException();
         }
-        User user;
-        user = User.builder()
+        AppUser user;
+        user = AppUser.builder()
             .username(requestUser.getUsername())
             .password(
                     passwordEncoder.encode(requestUser.getPassword())
@@ -67,10 +77,15 @@ public class AppUserService implements UserService {
         return userRepository.save(user);
     }
 
+//    @Transactional(
+//            timeout = 300,
+//            rollbackFor = {Exception.class},
+//            rollbackForClassName = {"Exception"}
+//    )
     @Override
-    public User updateUser(Long id, UserUpdateRequestModel requestUser) throws EntityNotFoundException {
+    public AppUser updateUser(Long id, UserUpdateRequestModel requestUser) throws EntityNotFoundException {
         if (userRepository.existsById(id)) {
-            User updateUser = userRepository.getById(id);
+            AppUser updateUser = userRepository.getById(id);
             if (!updateUser.getUsername().equals(requestUser.getUsername())) {
                 if (userRepository.findUserByUsername(requestUser.getUsername()) != null) {
                     throw new UserAlreadyExistsException();
@@ -88,10 +103,11 @@ public class AppUserService implements UserService {
         }
     }
 
+//    @Transactional(readOnly = true)
     @Override
-    public User getById(Long id) throws EntityNotFoundException {
+    public AppUser getById(Long id) throws EntityNotFoundException {
         if (userRepository.existsById(id)) {
-            Optional<User> user = userRepository.findById(id);
+            Optional<AppUser> user = userRepository.findById(id);
             return user.get();
         } else {
             String idString = String.valueOf(id);
@@ -99,12 +115,14 @@ public class AppUserService implements UserService {
         }
     }
 
+//    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     @Override
-    public List<User> getUsersList() {
-        List<User> users = userRepository.findAll();
+    public List<AppUser> getUsersList() {
+        List<AppUser> users = userRepository.findAll();
         return users;
     }
 
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void deleteUser(Long id) {
         if (id >= 0) {
