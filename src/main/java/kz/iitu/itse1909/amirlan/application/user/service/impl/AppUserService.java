@@ -122,7 +122,12 @@ public class AppUserService implements UserService {
         return users;
     }
 
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public void saveUser(AppUser user) {
+        userRepository.save(user);
+    }
+
+    //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void deleteUser(Long id) {
         if (id >= 0) {

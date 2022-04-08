@@ -37,7 +37,10 @@ public class AppUser {
     @JsonIgnore
     private String password;
 
+    @Column
+    private String avatar;
 
+    @Column
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToMany
     @JoinTable(

@@ -11,6 +11,7 @@ public interface UserService {
     AppUser updateUser(Long userId, UserUpdateRequestModel user);
     AppUser getById(Long id);
     List<AppUser> getUsersList();
+    void saveUser(AppUser user);
     void deleteUser(Long id);
     void logPostConstruct();
     void logPreDestroy();
