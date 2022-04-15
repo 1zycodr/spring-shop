@@ -48,16 +48,16 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userRepository.findUserByUsername(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        if (user == null) { throw new UsernameNotFoundException("User not found"); }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(),
                 true,
                 true,
                 true,
                 true,
-                getAuthorities(roleRepository.findAll())
+                getAuthorities(
+                        roleRepository.findAll()
+                )
         );
     }
 
@@ -69,26 +69,18 @@ public class AppUserDetailsService implements UserDetailsService {
         List<String> privileges = new ArrayList<>();
         List<Privilege> collection = new ArrayList<>();
 
-        for (Role role : roles) {
-            collection.addAll(role.getPrivileges());
-        }
+        for (Role role : roles) { collection.addAll(role.getPrivileges()); }
 
-        for (Privilege item : collection) {
-            privileges.add(item.getName());
-        }
+        for (Privilege item : collection) { privileges.add(item.getName()); }
 
-        roles.forEach(role -> {
-            privileges.add(role.getName());
-        });
+        roles.forEach(role -> { privileges.add(role.getName()); });
 
         return privileges;
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String privilege : privileges) {
-            authorities.add(new SimpleGrantedAuthority(privilege));
-        }
+        for (String privilege : privileges) { authorities.add(new SimpleGrantedAuthority(privilege)); }
         return authorities;
     }
 }

@@ -1,0 +1,3404 @@
+{
+	"info": {
+		"_postman_id": "f461d123-4ef3-448e-bb0d-73de08e627ab",
+		"name": "kalkan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "token",
+					"item": [
+						{
+							"name": "/api/user/token/",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is ok, response is json\", function () {\r",
+											"    pm.response.to.be.ok;\r",
+											"    pm.response.to.be.json; \r",
+											"});\r",
+											"\r",
+											"try {\r",
+											"    pm.environment.set(\"access\", pm.response.json().access)\r",
+											"    pm.environment.set(\"refresh\", pm.response.json().refresh)\r",
+											"} catch (error) {\r",
+											"    console.log(error)\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "admin",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/user/token/?route=/qwf",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"token",
+										""
+									],
+									"query": [
+										{
+											"key": "route",
+											"value": "/qwf"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/user/token/refresh/",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status is ok, response is json\", function () {\r",
+											"    pm.response.to.be.ok;\r",
+											"    pm.response.to.be.json; \r",
+											"});\r",
+											"\r",
+											"try {\r",
+											"    pm.environment.set(\"access\", pm.response.json().access)\r",
+											"} catch (error) {\r",
+											"    console.log(error)\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(pm.request.body)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"refresh\": \"{{refresh}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/user/token/refresh/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"token",
+										"refresh",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "password",
+					"item": [
+						{
+							"name": "/api/user/change_password/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"test\",\r\n    \"password2\": \"test\",\r\n    \"old_password\": \"test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/user/change_password/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"change_password",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/user/password/reset",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/user/password/reset?email=5zamiggos@gmail.com",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"password",
+										"reset"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "5zamiggos@gmail.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/user/password/reset",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/user/password/reset",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"password",
+										"reset"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/api/user/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/user/?limit=10&page=1",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+								},
+								{
+									"key": "username",
+									"value": "test23",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "user_enterprises",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "user_enterprises",
+									"value": "{\"id\": 1, \"security_sections\": [\"fire\"]}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/user/?route=/qwe",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								""
+							],
+							"query": [
+								{
+									"key": "route",
+									"value": "/qwe"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/:id/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/user/:id/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "67"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/:id/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "TEST",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/user/:id/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "67"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/user/:id/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/user/:id/",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								":id",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "69"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subsidiaries",
+			"item": [
+				{
+					"name": "subsidiary",
+					"item": [
+						{
+							"name": "/api/subsidiary/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/1/average_index",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"1",
+										"average_index"
+									],
+									"query": [
+										{
+											"key": "index",
+											"value": "unfilled",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"ДЗО 4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										":id",
+										""
+									],
+									"query": [
+										{
+											"key": "is_deleted_enterprises",
+											"value": "false",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "13"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"is_deleted\" : false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "13"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "13"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "enterprise",
+					"item": [
+						{
+							"name": "enterprise_data",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/data/",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "enterprise",
+													"value": "1",
+													"type": "text"
+												},
+												{
+													"key": "affiliation",
+													"value": "affiliation",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/data/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"data",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "13"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/data/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "enterprise",
+													"value": "13",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "affiliation",
+													"value": "affiliationn",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "sample_stamp",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/data/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"data",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "21"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise_characteristics",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/characteristics/:id/",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/characteristics/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"characteristics",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "7"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/characteristics/:id/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "parking",
+													"value": "true",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/characteristics/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"characteristics",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "20"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise_equipment",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/equipment/:id/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/equipment/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"equipment",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/equipment/:id/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "rk_contract_number",
+													"value": "1",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "security_measures",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "is_approved",
+													"value": "true",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/equipment/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"equipment",
+												":id",
+												""
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise_building",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/building/",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enterprise\": \"13\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/building/?limit=10",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"building",
+												""
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "10"
+												},
+												{
+													"key": "page",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/building/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "enterprise",
+													"value": "13",
+													"type": "text"
+												},
+												{
+													"key": "floor_plan",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "power_supply_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "water_supply_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "gas_supply_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "heat_supply_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "telecommunication_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png",
+													"disabled": true
+												},
+												{
+													"key": "hatches_grates_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/building/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"building",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/building/:id/",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enterprise\": 13\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/building/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"building",
+												":id",
+												""
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "10",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "14"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/building/:id/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "hatches_grates_scheme",
+													"type": "file",
+													"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/building/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"building",
+												":id",
+												""
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "10",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "55"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/building/:id/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enterprise\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/building/:id/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"building",
+												":id",
+												""
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "10",
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "4"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise_systems",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/systems/",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enterprise\": \"13\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/systems/?enterprise=23",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"systems",
+												""
+											],
+											"query": [
+												{
+													"key": "enterprise",
+													"value": "23"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/subsidiary/enterprise/systems/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"enterprise\": \"13\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/systems/?enterprise=12&type=VIDEO&state=ALARM",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"systems",
+												""
+											],
+											"query": [
+												{
+													"key": "enterprise",
+													"value": "12"
+												},
+												{
+													"key": "type",
+													"value": "VIDEO"
+												},
+												{
+													"key": "state",
+													"value": "ALARM"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise_weapon",
+							"item": [
+								{
+									"name": "New Request",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/weapon",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"weapon"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "enterprise city",
+							"item": [
+								{
+									"name": "/api/subsidiary/enterprise/cities/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/cities/",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"subsidiary",
+												"enterprise",
+												"cities",
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "/api/subsidiary/enterprise/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/?limit=10",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"enterprise",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/enterprise/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "subsidiary",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "new",
+											"type": "text"
+										},
+										{
+											"key": "acs_plan",
+											"type": "file",
+											"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"enterprise",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/enterprise/:id/",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"enterprise",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/enterprise/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "acs_plan",
+											"type": "file",
+											"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+										},
+										{
+											"key": "title",
+											"value": "пром",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "subsidiary",
+											"value": "2",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"enterprise",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "26"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/enterprise/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/enterprise/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"enterprise",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "12"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "security",
+			"item": [
+				{
+					"name": "composite",
+					"item": [
+						{
+							"name": "structure",
+							"item": [
+								{
+									"name": "/api/security/composite_struct",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/security/composite_struct/?data_struct=610",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"security",
+												"composite_struct",
+												""
+											],
+											"query": [
+												{
+													"key": "data_struct",
+													"value": "610"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "data",
+							"item": [
+								{
+									"name": "/api/security/composite_data/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/security/composite_data",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"security",
+												"composite_data"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/security/composite_data/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "state",
+													"value": "1/1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/security/composite_data/?composite_structure=1&enterprise=14",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"security",
+												"composite_data",
+												""
+											],
+											"query": [
+												{
+													"key": "composite_structure",
+													"value": "1"
+												},
+												{
+													"key": "enterprise",
+													"value": "14"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/security/composite_data/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "state",
+													"value": "0/1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/security/composite_data/?composite_structure=1&enterprise=14&id=1",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"security",
+												"composite_data",
+												""
+											],
+											"query": [
+												{
+													"key": "composite_structure",
+													"value": "1"
+												},
+												{
+													"key": "enterprise",
+													"value": "14"
+												},
+												{
+													"key": "id",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "/api/security/composite_data/",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{access}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{LOCAL_URL}}/api/security/composite_data/?composite_structure=1&enterprise=14&id=-1",
+											"host": [
+												"{{LOCAL_URL}}"
+											],
+											"path": [
+												"api",
+												"security",
+												"composite_data",
+												""
+											],
+											"query": [
+												{
+													"key": "composite_structure",
+													"value": "1"
+												},
+												{
+													"key": "enterprise",
+													"value": "14"
+												},
+												{
+													"key": "id",
+													"value": "-1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "/api/security/struct/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/struct/?enterprise=13",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"struct",
+								""
+							],
+							"query": [
+								{
+									"key": "enterprise",
+									"value": "13"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/data_struct/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/data_struct/?struct=701&enterprise=12",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"data_struct",
+								""
+							],
+							"query": [
+								{
+									"key": "struct",
+									"value": "701"
+								},
+								{
+									"key": "enterprise",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/data/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skd\": [\r\n    {\r\n      \"type\": \"Сетевая\",\r\n      \"description\": null,\r\n      \"id\": \"886441-skd\",\r\n      \"name\": \"йцу\"\r\n    },\r\n    {\r\n      \"type\": null,\r\n      \"description\": null,\r\n      \"id\": \"131426-skd\",\r\n      \"name\": \"фыв\"\r\n    }\r\n  ],\r\n  \"integration\": {\r\n    \"description\": \"a\",\r\n    \"state\": \"1/1\"\r\n  },\r\n  \"antipass\": {\r\n    \"description\": \"b\",\r\n    \"state\": \"1/1\"\r\n  },\r\n  \"state_reqs\": \"10/10\",\r\n  \"state\": \"10/10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/data/?struct=25&enterprise=23",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"data",
+								""
+							],
+							"query": [
+								{
+									"key": "struct",
+									"value": "25"
+								},
+								{
+									"key": "enterprise",
+									"value": "23"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/data_summary/",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": \"data updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/data_summary/:id/?enterprise=1",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"data_summary",
+								":id",
+								""
+							],
+							"query": [
+								{
+									"key": "enterprise",
+									"value": "1"
+								},
+								{
+									"key": "struct",
+									"value": "13",
+									"disabled": true
+								},
+								{
+									"key": "is_filled",
+									"value": "false",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/safety_index/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/safety_index/?enterprise=23&structure=7",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"safety_index",
+								""
+							],
+							"query": [
+								{
+									"key": "enterprise",
+									"value": "23"
+								},
+								{
+									"key": "structure",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/weak_spots/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/weak_spots/?enterprise=12&limit=30",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"weak_spots",
+								""
+							],
+							"query": [
+								{
+									"key": "enterprise",
+									"value": "12"
+								},
+								{
+									"key": "limit",
+									"value": "30"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/security/data/approve",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"security_struct\": 615,\r\n    \"is_approved\": true,\r\n    \"enterprise\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/security/data/approve?security_struct=400&enterprise=1",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"security",
+								"data",
+								"approve"
+							],
+							"query": [
+								{
+									"key": "security_struct",
+									"value": "400"
+								},
+								{
+									"key": "enterprise",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "documents",
+			"item": [
+				{
+					"name": "equipment_document",
+					"item": [
+						{
+							"name": "/api/equipment_document/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "document",
+											"type": "file",
+											"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+										},
+										{
+											"key": "type",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "subsidiary",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "enterprise",
+											"value": "13",
+											"type": "text"
+										},
+										{
+											"key": "security_structure",
+											"value": "13",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/security/equipment_document/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"security",
+										"equipment_document",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/equipment_document/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/security/equipment_document/?type__in=0,1&limit=1",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"security",
+										"equipment_document",
+										""
+									],
+									"query": [
+										{
+											"key": "enterprise",
+											"value": "23",
+											"disabled": true
+										},
+										{
+											"key": "subsidiary",
+											"value": "17",
+											"disabled": true
+										},
+										{
+											"key": "type__in",
+											"value": "0,1",
+											"description": "filter by several types (0 - equip passport, 1 - instruction)"
+										},
+										{
+											"key": "security_structure",
+											"value": "12",
+											"description": "structure filter. filtering by parents and parents parents is allowed.",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "1"
+										},
+										{
+											"key": "type",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "plan",
+					"item": [
+						{
+							"name": "/api/subsidiary/documents/plan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/documents/plan",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"documents",
+										"plan"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "99",
+											"disabled": true
+										},
+										{
+											"key": "subsidiary",
+											"value": "13",
+											"disabled": true
+										},
+										{
+											"key": "enterprise",
+											"value": "13",
+											"disabled": true
+										},
+										{
+											"key": "building",
+											"value": "56",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "hatches_grates_scheme",
+											"disabled": true
+										},
+										{
+											"key": "building__title__contains",
+											"value": "null",
+											"description": "search by building title",
+											"disabled": true
+										},
+										{
+											"key": "search",
+											"value": "qwf",
+											"description": "search by filename",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "scheme",
+					"item": [
+						{
+							"name": "/api/subsidiary/documents/schema",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/documents/schema?building&type&building__title__contains=&search",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"documents",
+										"schema"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "99",
+											"disabled": true
+										},
+										{
+											"key": "subsidiary",
+											"value": "13",
+											"disabled": true
+										},
+										{
+											"key": "enterprise",
+											"value": "14",
+											"disabled": true
+										},
+										{
+											"key": "building",
+											"value": null
+										},
+										{
+											"key": "type",
+											"value": null
+										},
+										{
+											"key": "building__title__contains",
+											"value": ""
+										},
+										{
+											"key": "search",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "specification",
+					"item": [
+						{
+							"name": "/api/subsidiary/documents/specification",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/documents/specification?enterprise=23&subsidiary=17&search=Req",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"documents",
+										"specification"
+									],
+									"query": [
+										{
+											"key": "enterprise",
+											"value": "23"
+										},
+										{
+											"key": "subsidiary",
+											"value": "17"
+										},
+										{
+											"key": "search",
+											"value": "Req"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/documents/specification",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "document",
+											"type": "file",
+											"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+										},
+										{
+											"key": "enterprise",
+											"value": "23",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/documents/specification/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"documents",
+										"specification",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/subsidiary/documents/specification Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/subsidiary/documents/specification/1/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"subsidiary",
+										"documents",
+										"specification",
+										"1",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "tasks",
+			"item": [
+				{
+					"name": "Task",
+					"item": [
+						{
+							"name": "/api/task/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/?limit=10&job__pattern__composites=1",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										""
+									],
+									"query": [
+										{
+											"key": "start_datetime__gte",
+											"value": "2021-12-21 00:00:00",
+											"description": "gte - greater than or equal (gt supported)",
+											"disabled": true
+										},
+										{
+											"key": "start_datetime__lte",
+											"value": "2021-12-22 00:00:00",
+											"description": "lte - less than or equal (lt supported)",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "job__pattern__security_structures",
+											"value": "7",
+											"description": "security structures filter (можешь спрашивать массив)",
+											"disabled": true
+										},
+										{
+											"key": "job__enterprise",
+											"value": "14",
+											"description": "enterprise filter",
+											"disabled": true
+										},
+										{
+											"key": "state",
+											"value": "STARTED",
+											"description": "EXPIRED, STARTED, SUCCEED, PLANNED",
+											"disabled": true
+										},
+										{
+											"key": "job__pattern__composites",
+											"value": "1",
+											"description": "composite filter (можешь спрашивать массив)"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/task/details/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "308624"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Report",
+					"item": [
+						{
+							"name": "/api/report/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/report/?user=1&task=1&task__job__enterprise=14",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										"report",
+										""
+									],
+									"query": [
+										{
+											"key": "user",
+											"value": "1"
+										},
+										{
+											"key": "task",
+											"value": "1"
+										},
+										{
+											"key": "task__job__enterprise",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/report/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/report/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										"report",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/report/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "description",
+											"value": "bruh",
+											"type": "text"
+										},
+										{
+											"key": "task",
+											"value": "306375",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/report/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										"report",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/report/:id/",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "description",
+											"value": "bruhhhqwf",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{LOCAL_URL}}/api/task/report/:id/",
+									"host": [
+										"{{LOCAL_URL}}"
+									],
+									"path": [
+										"api",
+										"task",
+										"report",
+										":id",
+										""
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "feedback",
+			"item": [
+				{
+					"name": "/api/feedback",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "screenshot",
+									"type": "file",
+									"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/Request Diagram.drawio.png"
+								},
+								{
+									"key": "phone",
+									"value": "+7777777777",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "something went wrong",
+									"type": "text"
+								},
+								{
+									"key": "page",
+									"value": "{bruh}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "bruh@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/feedback",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"feedback"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "access log",
+			"item": [
+				{
+					"name": "/api/accesslog/",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/accesslog?enterprise=1",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"accesslog"
+							],
+							"query": [
+								{
+									"key": "created_at__day",
+									"value": "21",
+									"disabled": true
+								},
+								{
+									"key": "created_at__month",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "created_at__year",
+									"value": "2022",
+									"disabled": true
+								},
+								{
+									"key": "created_at__gte",
+									"value": "2022-01-21 00:00:00",
+									"description": "greater than or equal",
+									"disabled": true
+								},
+								{
+									"key": "created_at__lte",
+									"value": "2022-01-21 00:00:00",
+									"description": "less than or equal",
+									"disabled": true
+								},
+								{
+									"key": "created_at__gt",
+									"value": "2022-01-21 00:00:00",
+									"description": "greater that",
+									"disabled": true
+								},
+								{
+									"key": "created_at__lt",
+									"value": "2022-01-21 00:00:00",
+									"description": "less than",
+									"disabled": true
+								},
+								{
+									"key": "enterprise",
+									"value": "1",
+									"description": "enteprise id"
+								},
+								{
+									"key": "request_user",
+									"value": "1",
+									"description": "user id",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "request_user__role",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "request_user__first_name__icontains",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "request_user__surname__icontains",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "request_user__patronymic__icontains",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "description__icontains",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "enterprise__title__icontains",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "request_user__first_name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "request_user__surname",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "request_user__patronymic",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notifications",
+			"item": [
+				{
+					"name": "/api/notification",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/notification",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"notification"
+							],
+							"query": [
+								{
+									"key": "read",
+									"value": "false",
+									"description": "bool, пометка прочитано или нет",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "0",
+									"description": "nullable int,  0 - пр. площадки, 1 - жб, 2 - задача начата, 3 - задача завершена",
+									"disabled": true
+								},
+								{
+									"key": "user",
+									"value": "82",
+									"description": "user id",
+									"disabled": true
+								},
+								{
+									"key": "enterprise",
+									"value": "59",
+									"description": "enterprise id",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/notification/count",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/notification/count?user=1",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"notification",
+								"count"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/notification/read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notifications\": [2, 3, 333]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/notification/read",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"notification",
+								"read"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "application",
+			"item": [
+				{
+					"name": "/api/application",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"fullname\": \"Test Test Test\",\r\n    \"phone_number\": \"+78008008080\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"organization\": \"test organization\",\r\n    \"comment\": \"test comment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL_URL}}/api/application",
+							"host": [
+								"{{LOCAL_URL}}"
+							],
+							"path": [
+								"api",
+								"application"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Index",
+			"item": [
+				{
+					"name": "/api/average-index",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/security/test/",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"security",
+						"test",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

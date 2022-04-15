@@ -86,8 +86,15 @@ public class AppUserService implements UserService {
     public AppUser updateUser(Long id, UserUpdateRequestModel requestUser) throws EntityNotFoundException {
         if (userRepository.existsById(id)) {
             AppUser updateUser = userRepository.getById(id);
-            if (!updateUser.getUsername().equals(requestUser.getUsername())) {
-                if (userRepository.findUserByUsername(requestUser.getUsername()) != null) {
+            if (!updateUser
+                    .getUsername()
+                    .equals(
+                            requestUser.getUsername()
+                    )
+            ) {
+                if (userRepository.findUserByUsername(
+                        requestUser.getUsername()
+                ) != null) {
                     throw new UserAlreadyExistsException();
                 } else {
                     updateUser.setUsername(requestUser.getUsername());
@@ -95,11 +102,17 @@ public class AppUserService implements UserService {
             }
             String password = requestUser.getPassword();
             if (password != null) {
-                updateUser.setPassword(passwordEncoder.encode(requestUser.getPassword()));
+                updateUser.setPassword(
+                        passwordEncoder.encode(
+                                requestUser.getPassword()
+                        )
+                );
             }
             return userRepository.save(updateUser);
         } else {
-            throw new EntityNotFoundException(String.valueOf(id));
+            throw new EntityNotFoundException(
+                    String.valueOf(id)
+            );
         }
     }
 
@@ -124,6 +137,7 @@ public class AppUserService implements UserService {
 
     @Override
     public void saveUser(AppUser user) {
+        System.out.println("Saving user " + user.getUsername() + "!");
         userRepository.save(user);
     }
 
@@ -131,6 +145,7 @@ public class AppUserService implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (id >= 0) {
+            System.out.println("Deleting user with id " + id + "!");
             userRepository.deleteById(id);
         }
     }

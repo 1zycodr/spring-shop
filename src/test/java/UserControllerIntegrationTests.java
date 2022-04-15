@@ -1,5 +1,3 @@
-package kz.iitu.itse1909.amirlan.application.user.controller;
-
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
@@ -7,14 +5,11 @@ import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.kernel.FileStorageService;
 import kz.iitu.itse1909.amirlan.utils.JsonUtil;
-
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.PathResource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
@@ -24,8 +19,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,14 +26,14 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class UserControllerTests {
+public class UserControllerIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,6 +1,7 @@
 package kz.iitu.itse1909.amirlan.application.user.entity;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,13 @@ class UserTest {
     void setId() {
         user.setId(10L);
         assertEquals(user.getId(), 10L);
+    }
+
+    @Test
+    void setId2() {
+        user.setId(10L);
+        ReflectionTestUtils.setField(user, "id", 1L);
+        assertEquals(user.getId(), 1L);
     }
 
     @Test

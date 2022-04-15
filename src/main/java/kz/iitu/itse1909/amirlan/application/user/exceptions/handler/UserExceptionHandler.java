@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     protected ResponseEntity<Object> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        return ApiErrorUtils.buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex));
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+        return ApiErrorUtils.buildResponseEntity(error);
     }
 }

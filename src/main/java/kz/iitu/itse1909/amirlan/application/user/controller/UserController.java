@@ -14,6 +14,7 @@ import kz.iitu.itse1909.amirlan.kernel.error.exceptions.InvalidArgumentException
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +22,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Lazy
 @RestController
@@ -48,6 +50,8 @@ public class UserController {
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     public UserController(UserService userService, FileStorageService fileStorageService, UserRepository userRepository) {
         this.userService = userService;
@@ -57,19 +61,23 @@ public class UserController {
 
     @PostConstruct
     private void logPostConstruct() {
-        logger.info(UserController.class.getSimpleName() + " constructed!");
+        String message = UserController.class.getSimpleName() + " constructed!";
+        logger.info(message);
     }
 
     @PreDestroy
     private void logPreDestroy() {
-        logger.info(UserController.class.getSimpleName() + " destroying!");
+        String message = UserController.class.getSimpleName() + " destroying!";
+        logger.info(message);
     }
 
     @PostMapping
     @ResponseBody
     public ResponseEntity<?> createUser(@Valid @RequestBody UserCreateRequestModel user, Errors errors) {
         processErrors(errors);
-        return ResponseEntity.ok(userService.createUser(user));
+        AppUser u = userService.createUser(user);
+        kafkaTemplate.send("userstopic", "User created: " + user.toString());
+        return ResponseEntity.ok(u);
     }
 
     @ApiOperation(value = "Search a user with an ID", response = AppUser.class)
@@ -82,16 +90,17 @@ public class UserController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getById(id));
+        AppUser user = userService.getById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public ResponseEntity<?> getUsers(@RequestHeader("host") String host,
-                                      @RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<?> getUsers(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "2") int size
     ) {
-        logger.info("Request from " + host);
-        Pageable paging = PageRequest.of(page, size);
+        Pageable paging = PageRequest.of(
+                page, size
+        );
         Page<AppUser> pageTuts = userRepository.findAll(paging);
         List<AppUser> users = pageTuts.getContent();
         Map<String, Object> response = new HashMap<>();
@@ -108,16 +117,18 @@ public class UserController {
                                         Errors errors
     ) {
         processErrors(errors);
-        return ResponseEntity.ok(userService.updateUser(id, user));
+        AppUser result = userService.updateUser(id, user);
+        return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/{id}/avatar/")
+    @PostMapping("/{id}/avatar/")
     @ResponseBody
     public UploadAvatarResponse uploadAvatar(@PathVariable Long id,
                                              @RequestParam("file") MultipartFile avatar) {
         String avatarName = fileStorageService.storeFile(avatar);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        String fileDownloadUri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
                 .path("api/v1/user/avatar/")
                 .path(avatarName)
                 .toUriString();
@@ -137,16 +148,14 @@ public class UserController {
         String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            logger.info("Could not determine file type.");
-        }
+        } catch (IOException ex) { logger.info("Could not determine file type."); }
 
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
+        if(contentType == null) { contentType = "application/octet-stream"; }
 
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
+                .contentType(
+                        MediaType.parseMediaType(contentType)
+                )
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +
                         resource.getFilename() + "\"")
                 .body(resource);
@@ -160,9 +169,7 @@ public class UserController {
 
     public void processErrors(Errors errors) throws InvalidArgumentException {
         if (errors.hasErrors()) {
-            List<String> errorsList = new ArrayList<>();
-            for (ObjectError err: errors.getAllErrors()) { errorsList.add(err.getDefaultMessage());}
-            throw new InvalidArgumentException(String.join(", ", errorsList));
+            errors.getAllErrors().stream().map((e) -> e.getDefaultMessage()).collect(Collectors.toList());
         }
     }
 }

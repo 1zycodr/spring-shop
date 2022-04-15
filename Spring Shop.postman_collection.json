@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "39d9c666-c83a-4337-b4b4-772e8f087c11",
+		"_postman_id": "84d6e474-0fba-4977-8009-2b9890f31cbf",
 		"name": "Spring Shop",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -66,12 +66,12 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
+									"key": "password",
 									"value": "admin",
 									"type": "string"
 								},
 								{
-									"key": "password",
+									"key": "username",
 									"value": "admin",
 									"type": "string"
 								}
@@ -107,7 +107,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "1"
 								}
 							]
 						}
@@ -147,7 +147,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/api/v1/user",
+							"raw": "http://127.0.0.1:8080/api/v1/user?page=0&size=3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -160,6 +160,16 @@
 								"api",
 								"v1",
 								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -270,6 +280,217 @@
 									"key": "id",
 									"value": "2"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "HEAD",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": null,\r\n    \"password\": \"qwffqwf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/user",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": null,\r\n    \"password\": \"qwffqwf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/user/:id/avatar",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/uml.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/v1/user/:id/avatar/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id",
+								"avatar",
+								""
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/user/:id/avatar",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/User/PycharmProjects/kalkan-security-app/docs/uml.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/api/v1/user/avatar/uml.png",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"avatar",
+								"uml.png"
 							]
 						}
 					},

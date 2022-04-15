@@ -6,4 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserRepository extends JpaRepository<AppUser, Long>, PagingAndSortingRepository<AppUser, Long> {
     AppUser findUserByUsername(String username);
+    AppUser getById(Long id);
 }

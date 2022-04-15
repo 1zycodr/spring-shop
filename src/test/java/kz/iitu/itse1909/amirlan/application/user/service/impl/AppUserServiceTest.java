@@ -176,4 +176,16 @@ class AppUserServiceTest {
     void deleteUser() {
         service.deleteUser(10L);
     }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin")
+    void saveUser() {
+        AppUser user = AppUser.builder()
+                .username("test_user")
+                .password("password")
+                .build();
+        Assertions.assertDoesNotThrow(() -> {
+            service.saveUser(user);
+        });
+    }
 }
