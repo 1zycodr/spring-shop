@@ -15,4 +15,6 @@ public interface UserService {
     void deleteUser(Long id);
     void logPostConstruct();
     void logPreDestroy();
+    String signin(String username, String password);
+    String signup(UserCreateRequestModel appUser);
 }

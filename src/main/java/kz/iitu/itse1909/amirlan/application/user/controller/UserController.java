@@ -1,9 +1,6 @@
 package kz.iitu.itse1909.amirlan.application.user.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UploadAvatarResponse;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserCreateRequestModel;
 import kz.iitu.itse1909.amirlan.application.user.controller.model.UserUpdateRequestModel;
@@ -23,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,6 +68,19 @@ public class UserController {
     private void logPreDestroy() {
         String message = UserController.class.getSimpleName() + " destroying!";
         logger.info(message);
+    }
+
+    @PostMapping("/signin")
+    public String login(
+                        @RequestParam String username,
+                        @RequestParam String password) {
+        System.out.println("yo");
+        return userService.signin(username, password);
+    }
+
+    @PostMapping("/signup")
+    public String signup(@ApiParam("Signup User") @RequestBody UserCreateRequestModel user) {
+        return userService.signup(user);
     }
 
     @PostMapping

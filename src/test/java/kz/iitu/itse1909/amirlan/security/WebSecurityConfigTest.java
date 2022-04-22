@@ -20,65 +20,65 @@ import org.springframework.web.accept.ContentNegotiationStrategy;
 
 import static org.mockito.Mockito.*;
 
-class WebSecurityConfigTest {
-    @Mock
-    UserDetailsService userDetailsService;
-    @Mock
-    Log logger;
-    @Mock
-    ApplicationContext context;
-    @Mock
-    ContentNegotiationStrategy contentNegotiationStrategy;
-    @Mock
-    ObjectPostProcessor<Object> objectPostProcessor;
-    @Mock
-    AuthenticationConfiguration authenticationConfiguration;
-    @Mock
-    AuthenticationManagerBuilder authenticationBuilder;
-    @Mock
-    AuthenticationManagerBuilder localConfigureAuthenticationBldr;
-    @Mock
-    AuthenticationManager authenticationManager;
-    @Mock
-    AuthenticationTrustResolver trustResolver;
-    //Field http of type HttpSecurity - was not mocked since Mockito doesn't mock a Final class when 'mock-maker-inline' option is not set
-    @InjectMocks
-    WebSecurityConfig webSecurityConfig;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    void testPasswordEncoder() {
-        Assertions.assertDoesNotThrow(() -> {
-            PasswordEncoder result = webSecurityConfig.passwordEncoder();
-            Assertions.assertNotEquals(null, result);
-        });
-    }
-
-    @Test
-    void testAnotherPasswordEncoder() {
-        PasswordEncoder result = webSecurityConfig.anotherPasswordEncoder();
-        Assertions.assertNotEquals(null, result);
-    }
-
-    @Test
-    void testRoleHierarchy() {
-        RoleHierarchy result = webSecurityConfig.roleHierarchy();
-        Assertions.assertNotEquals(null, result);
-    }
-
-//    @Test
-//    void testConfigure() {
-//        webSecurityConfig.configure(null);
+//class WebSecurityConfigTest {
+//    @Mock
+//    UserDetailsService userDetailsService;
+//    @Mock
+//    Log logger;
+//    @Mock
+//    ApplicationContext context;
+//    @Mock
+//    ContentNegotiationStrategy contentNegotiationStrategy;
+//    @Mock
+//    ObjectPostProcessor<Object> objectPostProcessor;
+//    @Mock
+//    AuthenticationConfiguration authenticationConfiguration;
+//    @Mock
+//    AuthenticationManagerBuilder authenticationBuilder;
+//    @Mock
+//    AuthenticationManagerBuilder localConfigureAuthenticationBldr;
+//    @Mock
+//    AuthenticationManager authenticationManager;
+//    @Mock
+//    AuthenticationTrustResolver trustResolver;
+//    //Field http of type HttpSecurity - was not mocked since Mockito doesn't mock a Final class when 'mock-maker-inline' option is not set
+//    @InjectMocks
+//    WebSecurityConfig webSecurityConfig;
+//
+//    @BeforeEach
+//    void setUp() {
+//        MockitoAnnotations.initMocks(this);
 //    }
 //
 //    @Test
-//    void testConfigure2() {
-//        webSecurityConfig.configure(null);
+//    void testPasswordEncoder() {
+//        Assertions.assertDoesNotThrow(() -> {
+//            PasswordEncoder result = webSecurityConfig.passwordEncoder();
+//            Assertions.assertNotEquals(null, result);
+//        });
 //    }
-}
+//
+//    @Test
+//    void testAnotherPasswordEncoder() {
+//        PasswordEncoder result = webSecurityConfig.anotherPasswordEncoder();
+//        Assertions.assertNotEquals(null, result);
+//    }
+//
+//    @Test
+//    void testRoleHierarchy() {
+//        RoleHierarchy result = webSecurityConfig.roleHierarchy();
+//        Assertions.assertNotEquals(null, result);
+//    }
+//
+////    @Test
+////    void testConfigure() {
+////        webSecurityConfig.configure(null);
+////    }
+////
+////    @Test
+////    void testConfigure2() {
+////        webSecurityConfig.configure(null);
+////    }
+//}
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

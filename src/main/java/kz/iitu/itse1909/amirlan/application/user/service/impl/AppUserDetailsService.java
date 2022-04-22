@@ -5,8 +5,10 @@ import kz.iitu.itse1909.amirlan.application.user.entity.Role;
 import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.repository.RoleRepository;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
+import kz.iitu.itse1909.amirlan.security.auth.LoginAttemptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +30,12 @@ import java.util.List;
 public class AppUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    @Autowired
+    private LoginAttemptService loginAttemptService;
+
+    @Autowired
+    private HttpServletRequest request;
+
     private static final Logger logger = LoggerFactory.getLogger(AppUserDetailsService.class);
 
     public AppUserDetailsService(UserRepository userRepository, RoleRepository roleRepository) {
@@ -46,8 +55,11 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        String ip = getClientIP();
         AppUser user = userRepository.findUserByUsername(username);
-
+        if (loginAttemptService.isBlocked(ip)) {
+            throw new RuntimeException("blocked");
+        }
         if (user == null) { throw new UsernameNotFoundException("User not found"); }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(),
@@ -82,5 +94,13 @@ public class AppUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (String privilege : privileges) { authorities.add(new SimpleGrantedAuthority(privilege)); }
         return authorities;
+    }
+
+    private String getClientIP() {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null){
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 }

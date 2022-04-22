@@ -7,12 +7,17 @@ import kz.iitu.itse1909.amirlan.application.user.exceptions.UserAlreadyExistsExc
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.kernel.error.exceptions.EntityNotFoundException;
+import kz.iitu.itse1909.amirlan.security.jwt.JwtTokenProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -31,14 +36,19 @@ import java.util.Optional;
 public class AppUserService implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
     private static final Logger logger = LoggerFactory.getLogger(AppUserService.class);
 
     @Value("${custom.property}")
     private String testValue;
 
-    public AppUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AppUserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                          JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostConstruct
@@ -55,7 +65,29 @@ public class AppUserService implements UserService {
         logger.info(logMessage);
     }
 
-//    @Transactional(
+    @Override
+    public String signin(String username, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return jwtTokenProvider.createToken(username, null);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid username/password supplied", e);
+        }
+    }
+
+    @Override
+    public String signup(UserCreateRequestModel appUser) {
+        if (userRepository.findUserByUsername(appUser.getUsername()) != null) {
+            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+            AppUser user = AppUser.builder().username(appUser.getUsername()).password(passwordEncoder.encode(appUser.getPassword())).build();
+            userRepository.save(user);
+            return jwtTokenProvider.createToken(user.getUsername(), null);
+        } else {
+            throw new UserAlreadyExistsException();
+        }
+    }
+
+    //    @Transactional(
 //            value = "transactionManager",
 //            isolation = Isolation.REPEATABLE_READ,
 //            noRollbackFor = {Exception.class},

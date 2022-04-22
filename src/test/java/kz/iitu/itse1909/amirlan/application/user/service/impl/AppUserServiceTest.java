@@ -7,11 +7,13 @@ import kz.iitu.itse1909.amirlan.application.user.exceptions.UserAlreadyExistsExc
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.kernel.error.exceptions.EntityNotFoundException;
+import kz.iitu.itse1909.amirlan.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -30,12 +32,18 @@ class AppUserServiceTest {
     @Mock
     PasswordEncoder passwordEncoder;
 
+    @Mock
+    JwtTokenProvider jwtTokenProvider;
+
+    @Mock
+    AuthenticationManager authenticationManager;
+
     private UserService service;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.service = new AppUserService(userRepository, passwordEncoder);
+        this.service = new AppUserService(userRepository, passwordEncoder, jwtTokenProvider, authenticationManager);
     }
 
     @Test

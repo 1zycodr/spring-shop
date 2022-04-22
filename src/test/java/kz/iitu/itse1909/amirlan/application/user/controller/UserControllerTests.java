@@ -6,11 +6,14 @@ import kz.iitu.itse1909.amirlan.application.user.entity.AppUser;
 import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
 import kz.iitu.itse1909.amirlan.kernel.FileStorageService;
+import kz.iitu.itse1909.amirlan.security.jwt.JwtTokenProvider;
 import kz.iitu.itse1909.amirlan.utils.JsonUtil;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.PathResource;
@@ -20,7 +23,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -53,6 +58,12 @@ public class UserControllerTests {
 
     @MockBean
     UserRepository userRepository;
+
+    @MockBean
+    JwtTokenProvider jwtTokenProvider;
+
+    @MockBean
+    AuthenticationManager authenticationManager;
 
     @MockBean
     KafkaTemplate<String, String> kafkaTemplate;

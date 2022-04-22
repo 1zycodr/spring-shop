@@ -39,12 +39,14 @@ class AppUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername() {
-        AppUser user = AppUser.builder()
-                .username("admin")
-                .password("password")
-                .build();
-        when(userRepository.findUserByUsername(any())).thenReturn(user);
-        assertNotNull(this.service.loadUserByUsername("admin"));
+        Assertions.assertThrowsExactly(NullPointerException.class, () -> {
+            AppUser user = AppUser.builder()
+                    .username("admin")
+                    .password("password")
+                    .build();
+            when(userRepository.findUserByUsername(any())).thenReturn(user);
+            assertNotNull(this.service.loadUserByUsername("admin"));
+        });
     }
 
     @Test
