@@ -9,6 +9,7 @@ import kz.iitu.itse1909.amirlan.application.user.repository.UserRepository;
 import kz.iitu.itse1909.amirlan.kernel.FileStorageService;
 import kz.iitu.itse1909.amirlan.kernel.error.exceptions.InvalidArgumentException;
 import kz.iitu.itse1909.amirlan.application.user.service.UserService;
+import kz.iitu.itse1909.amirlan.kernel.socket.SocketMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.validation.Errors;
@@ -34,10 +37,8 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Lazy
@@ -183,5 +184,12 @@ public class UserController {
         if (errors.hasErrors()) {
             errors.getAllErrors().stream().map((e) -> e.getDefaultMessage()).collect(Collectors.toList());
         }
+    }
+
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public SocketMessage send(SocketMessage message) throws Exception {
+        String time = new SimpleDateFormat("HH:mm").format(new Date());
+        return new SocketMessage(message.getFrom(), message.getText(), time);
     }
 }

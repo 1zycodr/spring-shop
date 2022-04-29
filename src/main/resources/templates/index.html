@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Main Page</title>
+</head>
+<body>
+<h3>You can <a href="registerUser">register</a> new user!</h3>
+<h3>Users:</h3>
+<table>
+    <tr>
+        <th>Username:</th>
+        <th>Password:</th>
+    </tr>
+    <tr th:each="user: ${users}">
+        <td th:utext="${user.username}"></td>
+        <td th:utext="${user.password}"></td>
+    </tr>
+</table>
+</body>
+</html>
