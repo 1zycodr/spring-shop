@@ -53,7 +53,8 @@ public class AppUserService implements UserService {
 
     @PostConstruct
     public void logPostConstruct() {
-        String logMessage = AppUserService.class.getSimpleName() + " constructed!";
+        String logMessage;
+        logMessage = AppUserService.class.getSimpleName() + " constructed!";
         logger.info(logMessage);
         // here we can see test_value in console
         System.out.println(testValue);
@@ -61,7 +62,8 @@ public class AppUserService implements UserService {
 
     @PreDestroy
     public void logPreDestroy() {
-        String logMessage = AppUserService.class.getSimpleName() + " destroying!";
+        String logMessage;
+        logMessage = AppUserService.class.getSimpleName() + " destroying!";
         logger.info(logMessage);
     }
 
@@ -87,23 +89,22 @@ public class AppUserService implements UserService {
         }
     }
 
-    //    @Transactional(
-//            value = "transactionManager",
-//            isolation = Isolation.REPEATABLE_READ,
-//            noRollbackFor = {Exception.class},
-//            noRollbackForClassName = {"NullPointerException"}
-//    )
     @Override
     public AppUser createUser(UserCreateRequestModel requestUser) {
-        AppUser userRep = userRepository.findUserByUsername(requestUser.getUsername());
+        AppUser userRep;
+        userRep = userRepository.findUserByUsername(requestUser.getUsername());
         if (userRep != null) {
             throw new UserAlreadyExistsException();
         }
         AppUser user;
         user = AppUser.builder()
-            .username(requestUser.getUsername())
+            .username(
+                    requestUser.getUsername()
+            )
             .password(
-                    passwordEncoder.encode(requestUser.getPassword())
+                    passwordEncoder.encode(
+                            requestUser.getPassword()
+                    )
             )
             .build();
         return userRepository.save(user);

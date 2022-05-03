@@ -30,11 +30,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-        } catch (Exception ex) {
-            SecurityContextHolder.clearContext();
-            httpServletResponse.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
-            return;
+            }} catch (Exception ex) {SecurityContextHolder.clearContext();httpServletResponse.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());return;
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);

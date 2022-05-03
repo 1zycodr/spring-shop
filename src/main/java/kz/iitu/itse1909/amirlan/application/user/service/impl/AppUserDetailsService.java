@@ -45,32 +45,23 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @PostConstruct
     public void logPostConstruct() {
-        logger.info(AppUserDetailsService.class.getSimpleName() + " constructed!");
+        String log = AppUserDetailsService.class.getSimpleName() + " constructed!";
+        logger.info(log);
     }
 
     @PreDestroy
     public void logPreDestroy() {
-        logger.info(AppUserDetailsService.class.getSimpleName() + " destroying!");
+        String log = AppUserDetailsService.class.getSimpleName() + " destroying!";
+        logger.info(log);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String ip = getClientIP();
         AppUser user = userRepository.findUserByUsername(username);
-        if (loginAttemptService.isBlocked(ip)) {
-            throw new RuntimeException("blocked");
-        }
+        if (loginAttemptService.isBlocked(ip)) {throw new RuntimeException("blocked");}
         if (user == null) { throw new UsernameNotFoundException("User not found"); }
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                getAuthorities(
-                        roleRepository.findAll()
-                )
-        );
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),true,true,true,true,getAuthorities( roleRepository.findAll()));
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
@@ -80,9 +71,7 @@ public class AppUserDetailsService implements UserDetailsService {
     public List<String> getPrivileges(Collection<Role> roles) {
         List<String> privileges = new ArrayList<>();
         List<Privilege> collection = new ArrayList<>();
-
         for (Role role : roles) { collection.addAll(role.getPrivileges()); }
-
         for (Privilege item : collection) { privileges.add(item.getName()); }
 
         roles.forEach(role -> { privileges.add(role.getName()); });
@@ -98,9 +87,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private String getClientIP() {
         String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null){
-            return request.getRemoteAddr();
-        }
+        if (xfHeader == null){return request.getRemoteAddr();}
         return xfHeader.split(",")[0];
     }
 }

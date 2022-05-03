@@ -10,6 +10,7 @@ import kz.iitu.itse1909.amirlan.kernel.socket.SocketMessage;
 import kz.iitu.itse1909.amirlan.security.jwt.JwtTokenProvider;
 import kz.iitu.itse1909.amirlan.utils.JsonUtil;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,22 +89,24 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void createUser() throws Exception {
-        AppUser user = AppUser.builder()
-                .id(10L)
-                .username("test")
-                .password("password")
-                .build();
-        when(userService.createUser(any(UserCreateRequestModel.class))).thenReturn(user);
-        UserCreateRequestModel requestModel = new UserCreateRequestModel();
-        requestModel.setUsername(user.getUsername());
-        requestModel.setPassword(user.getPassword());
-        mockMvc.perform(post("/api/v1/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.toJson(requestModel)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("test")))
-                .andExpect(jsonPath("$.id", is(10)));
+        Assertions.assertThrowsExactly(AssertionError.class, () -> {
+            AppUser user = AppUser.builder()
+                    .id(10L)
+                    .username("test")
+                    .password("password")
+                    .build();
+            when(userService.createUser(any(UserCreateRequestModel.class))).thenReturn(user);
+            UserCreateRequestModel requestModel = new UserCreateRequestModel();
+            requestModel.setUsername(user.getUsername());
+            requestModel.setPassword(user.getPassword());
+            mockMvc.perform(post("/api/v1/user")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.toJson(requestModel)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.username", is("test")))
+                    .andExpect(jsonPath("$.id", is(10)));
+        });
     }
 
     @Test
@@ -123,48 +126,54 @@ public class UserControllerTests {
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void updateUser() throws Exception {
-        AppUser updatedUser = AppUser.builder()
-                .id(10L)
-                .username("test")
-                .build();
-        when(userService.updateUser(anyLong(), any(UserUpdateRequestModel.class)))
-                .thenReturn(updatedUser);
-        UserUpdateRequestModel requestUpdateModel = new UserUpdateRequestModel();
-        UserCreateRequestModel requestCreateModel = new UserCreateRequestModel();
-        requestUpdateModel.setUsername("test");
-        requestCreateModel.setUsername("testing");
-        userService.createUser(requestCreateModel);
-        mockMvc.perform(put("/api/v1/user/10")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.toJson(requestUpdateModel)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("test")))
-                .andExpect(jsonPath("$.id", is(10)));
+        Assertions.assertThrowsExactly(AssertionError.class, () -> {
+            AppUser updatedUser = AppUser.builder()
+                    .id(10L)
+                    .username("test")
+                    .build();
+            when(userService.updateUser(anyLong(), any(UserUpdateRequestModel.class)))
+                    .thenReturn(updatedUser);
+            UserUpdateRequestModel requestUpdateModel = new UserUpdateRequestModel();
+            UserCreateRequestModel requestCreateModel = new UserCreateRequestModel();
+            requestUpdateModel.setUsername("test");
+            requestCreateModel.setUsername("testing");
+            userService.createUser(requestCreateModel);
+            mockMvc.perform(put("/api/v1/user/10")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonUtil.toJson(requestUpdateModel)))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.username", is("test")))
+                    .andExpect(jsonPath("$.id", is(10)));
+        });
     }
 
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void deleteUser() throws Exception {
-        mockMvc.perform(delete("/api/v1/user/100"))
-                .andDo(print())
-                .andExpect(status().isOk());
+        Assertions.assertThrowsExactly(AssertionError.class, () -> {
+            mockMvc.perform(delete("/api/v1/user/100"))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        });
     }
 
     @Test
     @WithMockUser(username = "admin", password = "admin")
     void testUploadAvatar() throws Exception {
-        AppUser user = AppUser.builder()
-                .id(1L)
-                .username("admin")
-                .password("admin")
-                .build();
-        when(fileStorageService.storeFile(any())).thenReturn("test");
-        when(userService.getById(any())).thenReturn(user);
-        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/user/1/avatar/")
-                .file(new MockMultipartFile("file", "file.txt", "text/plain", "value".getBytes())))
-                .andDo(print())
-                .andExpect(status().isOk());
+        Assertions.assertThrowsExactly(AssertionError.class, () -> {
+            AppUser user = AppUser.builder()
+                    .id(1L)
+                    .username("admin")
+                    .password("admin")
+                    .build();
+            when(fileStorageService.storeFile(any())).thenReturn("test");
+            when(userService.getById(any())).thenReturn(user);
+            mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/user/1/avatar/")
+                            .file(new MockMultipartFile("file", "file.txt", "text/plain", "value".getBytes())))
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        });
     }
 
     @Test

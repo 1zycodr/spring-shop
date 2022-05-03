@@ -10,6 +10,7 @@ public class JmsListener {
 
     @KafkaListener(topics = "userstopic", errorHandler = "", groupId = "group_id")
     public void listener(String message) {
-        System.out.println(message);
+        String log = "Received message: " + message;
+        System.out.println(log);
     }
 }

@@ -32,12 +32,13 @@ public class FileStorageService {
     }
 
     public String storeFile(MultipartFile file) {
-        String fileName = StringUtils.cleanPath(
-                file.getOriginalFilename()
-        );
+        String path;
+        path = file.getOriginalFilename();
+        String fileName;
+        fileName = StringUtils.cleanPath(path);
 
         try {
-            if(fileName.contains("..")) { throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName); }
+            if(fileName.contains("..")) {throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);}
 
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING); return fileName;
@@ -56,9 +57,6 @@ public class FileStorageService {
             );
             if(resource.exists()) { return resource; } else {
                 throw new RuntimeException(
-                        "File not found " + fileName
-                );
-            }
-        } catch (MalformedURLException ex) { throw new RuntimeException("File not found " + fileName, ex); }
+                        "File not found " + fileName);}} catch (MalformedURLException ex) { throw new RuntimeException("File not found " + fileName, ex); }
     }
 }

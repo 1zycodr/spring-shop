@@ -130,8 +130,7 @@ public class UserController {
                                         Errors errors
     ) {
         processErrors(errors);
-        AppUser result = userService.updateUser(id, user);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
     @PostMapping("/{id}/avatar/")
@@ -140,16 +139,9 @@ public class UserController {
                                              @RequestParam("file") MultipartFile avatar) {
         String avatarName = fileStorageService.storeFile(avatar);
 
-        String fileDownloadUri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("api/v1/user/avatar/")
-                .path(avatarName)
-                .toUriString();
-        AppUser user = userService.getById(id);
-        user.setAvatar(fileDownloadUri);
-        userService.saveUser(user);
-        return new UploadAvatarResponse(avatarName, fileDownloadUri,
-                avatar.getContentType(), avatar.getSize());
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/user/avatar/").path(avatarName).toUriString();
+        AppUser user = userService.getById(id); user.setAvatar(fileDownloadUri); userService.saveUser(user);
+        return new UploadAvatarResponse(avatarName, fileDownloadUri, avatar.getContentType(), avatar.getSize());
     }
 
     @GetMapping("/avatar/{fileName:.*}")

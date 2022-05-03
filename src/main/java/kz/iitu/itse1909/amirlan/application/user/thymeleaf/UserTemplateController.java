@@ -22,18 +22,25 @@ public class UserTemplateController {
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model model) {
-        model.addAttribute("users", userService.getUsersList());
+        System.out.println("query to index");
+        model.addAttribute(
+                "users",
+                userService.getUsersList()
+        );
         return "index";
     }
 
     @RequestMapping(value = {"/socket"}, method = RequestMethod.GET)
     public String socket(Model model) {
+        System.out.println("query to socket");
         return "socket";
     }
 
     @RequestMapping(value = {"/registerUser"}, method = RequestMethod.GET)
     public String register(Model model) {
+        System.out.println("Query to register user");
         AppUserForm form = new AppUserForm();
+        form = new AppUserForm();
         model.addAttribute("form", form);
         model.addAttribute("error", "");
         return "register";

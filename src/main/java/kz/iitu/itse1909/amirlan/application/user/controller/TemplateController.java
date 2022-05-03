@@ -12,11 +12,11 @@ import java.nio.file.Path;
 
 @Lazy
 @RestController
-@RequestMapping("/socket")
+@RequestMapping("/socket-old")
 public class TemplateController {
-//    @GetMapping
-//    public ResponseEntity<String> get() throws IOException {
-//        Path path = Path.of("src/main/resources/templates/socket.html");
-//        return ResponseEntity.ok(Files.readString(path));
-//    }
+    @GetMapping
+    public ResponseEntity<String> get() throws IOException {
+        Path path = Path.of("src/main/resources/templates/socket.html");
+        return ResponseEntity.ok(Files.readString(path));
+    }
 }

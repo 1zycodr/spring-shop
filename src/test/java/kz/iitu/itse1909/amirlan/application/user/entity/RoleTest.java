@@ -12,11 +12,11 @@ import java.util.Collection;
 
 import static org.mockito.Mockito.*;
 
-class PrivilegeTest {
+class RoleTest {
     @Mock
-    Collection<Role> roles;
+    Collection<Privilege> privileges;
     @InjectMocks
-    Privilege privilege;
+    Role role;
 
     @BeforeEach
     void setUp() {
@@ -25,18 +25,18 @@ class PrivilegeTest {
 
     @Test
     void testSetId() {
-        privilege.setId(Long.valueOf(1));
+        role.setId(Long.valueOf(1));
     }
 
     @Test
     void testSetName() {
-        privilege.setName("name");
+        role.setName("name");
     }
 
     @Test
-    void testSetRoles() {
+    void testSetPrivileges() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
-            privilege.setRoles(Arrays.<Role>asList(new Role(Long.valueOf(1), "name", Arrays.<Privilege>asList(new Privilege(Long.valueOf(1), "name", Arrays.<Role>asList(null))))));
+            role.setPrivileges(Arrays.<Privilege>asList(new Privilege(Long.valueOf(1), "name", Arrays.<Role>asList(new Role(Long.valueOf(1), "name", Arrays.<Privilege>asList(null))))));
         });
     }
 }

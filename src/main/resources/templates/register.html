@@ -2,29 +2,130 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Add Person</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .navbar {
+            transition: all 0.4s;
+        }
+
+        .navbar .nav-link {
+            color: #fff;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar .navbar-brand {
+            color: #fff;
+        }
+
+
+        /* Change navbar styling on scroll */
+        .navbar.active {
+            background: #fff;
+            box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar.active .nav-link {
+            color: #555;
+        }
+
+        .navbar.active .nav-link:hover,
+        .navbar.active .nav-link:focus {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .navbar.active .navbar-brand {
+            color: #555;
+        }
+
+
+        /* Change navbar styling on small viewports */
+        @media (max-width: 991.98px) {
+            .navbar {
+                background: #fff;
+            }
+
+            .navbar .navbar-brand, .navbar .nav-link {
+                color: #555;
+            }
+        }
+
+
+
+        /*
+        *
+        * ==========================================
+        * FOR DEMO PURPOSES
+        * ==========================================
+        *
+        */
+        .text-small {
+            font-size: 0.9rem !important;
+        }
+
+
+        body {
+            min-height: 110vh;
+            background-color: #4ca1af;
+            background-image: linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%);
+        }
+        table, th, td {
+            border: 1px solid aqua;
+            border-radius: 20px;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-<h1>Create a Person:</h1>
-
-
-<form th:action="@{/registerUser}"
-      th:object="${form}" method="POST">
-    Username:
-    <input type="text" th:field="*{username}" />
-    <br/>
-    Password:
-    <input type="password" th:field="*{password}" />
-    <br/>
-    <input type="submit" value="Create"/>
-</form>
-
-<br/>
-<div th:if="${error}" th:utext="${error}"
-     style="color:red;font-style:italic;">
-    ...
+<div th:insert="fragments/header.html::header"></div>
+<div class="container">
+    <div class="pt-5 text-white">
+        <header class="py-5 mt-5">
+            <h1 class="display-4">Create User:</h1>
+            <form th:action="@{/registerUser}"
+                  th:object="${form}" method="POST">
+                <div style="width: 100%; display:flex; justify-content:space-between;">
+                    <label>Username:</label>
+                    <input style="margin-right: 55%; border-radius: 4%" type="text" th:field="*{username}" />
+                </div>
+                <br/>
+                <div style="width: 100%; display:flex; justify-content:space-between;">
+                    <label>Password:</label>
+                    <input style="margin-right: 55%; border-radius: 4%" type="password" th:field="*{password}" />
+                </div>
+                <br/>
+                <input style="width: 180px;" type="submit" value="Create"/>
+            </form>
+        </header>
+        <div class="py-5">
+            <p class="lead">Lorem ipsum dolor sit amet, <strong class="font-weight-bold">consectetur adipisicing </strong>elit. Explicabo consectetur odio voluptatum facere animi temporibus, distinctio tempore enim corporis quam <strong class="font-weight-bold">recusandae </strong>placeat! Voluptatum voluptate, ex modi illum quas nam distinctio.</p>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+        <div class="py-5">
+            <p class="lead">Lorem ipsum dolor sit amet, <strong class="font-weight-bold">consectetur adipisicing </strong>elit. Explicabo consectetur odio voluptatum facere animi temporibus, distinctio tempore enim corporis quam <strong class="font-weight-bold">recusandae </strong>placeat! Voluptatum voluptate, ex modi illum quas nam distinctio.</p>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    </div>
 </div>
-
+<script>
+    $(function () {
+        $(window).on('scroll', function () {
+            if ( $(window).scrollTop() > 10 ) {
+                $('.navbar').addClass('active');
+            } else {
+                $('.navbar').removeClass('active');
+            }
+        });
+    });
+</script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
